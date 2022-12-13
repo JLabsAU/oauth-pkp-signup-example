@@ -7,7 +7,8 @@ import "./App.css";
 window.LitJsSdk = LitJsSdk;
 window.ethers = ethers;
 
-const RELAY_API_URL = process.env.RELAY_API_URL || 'http://localhost:3001';
+const RELAY_API_URL = process.env.RELAY_API_URL || 'http://18.212.154.224:3001';
+//const RELAY_API_URL = process.env.RELAY_API_URL || 'http://localhost:3001';
 
 function App() {
   const [pkpEthAddress, setPkpEthAddress] = useState(null);
@@ -89,6 +90,11 @@ function App() {
     // at this point, polling ended and still no success, set failure status
     setStatus(`Hmm this is taking longer than expected...`)
   } 
+
+  const handleTest = async () => {
+    const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain: "mumbai" });
+    console.debug("authSig", authSig);
+  };
 
   const handleStoreEncryptionCondition = async () => {
     setStatus("Storing encryption condition...");
@@ -317,6 +323,10 @@ function App() {
       <h3>Step 2: Use Lit Network to obtain a session sig before storing a condition.</h3>
       <button onClick={handleStoreEncryptionCondition}>
         Encrypt with Lit
+      </button>
+
+      <button onClick={handleTest}>
+        Test
       </button>
     </div>
   );
