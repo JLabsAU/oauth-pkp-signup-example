@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/oauth-pkp-signup-example/static/css/main.ba17183d.css",
-    "main.js": "/oauth-pkp-signup-example/static/js/main.380d733d.js",
+    "main.js": "/oauth-pkp-signup-example/static/js/main.2dae209a.js",
     "static/js/27.68de765c.chunk.js": "/oauth-pkp-signup-example/static/js/27.68de765c.chunk.js",
     "index.html": "/oauth-pkp-signup-example/index.html"
   },
   "entrypoints": [
     "static/css/main.ba17183d.css",
-    "static/js/main.380d733d.js"
+    "static/js/main.2dae209a.js"
   ]
 }
