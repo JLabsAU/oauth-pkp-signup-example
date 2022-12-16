@@ -7,8 +7,8 @@ import "./App.css";
 window.LitJsSdk = LitJsSdk;
 window.ethers = ethers;
 
-const RELAY_API_URL = process.env.RELAY_API_URL || 'http://18.212.154.224:3001';
-//const RELAY_API_URL = process.env.RELAY_API_URL || 'http://localhost:3001';
+// const RELAY_API_URL = process.env.RELAY_API_URL || 'https://lit-relay-server.api.3wlabs.xyz:3001';
+const RELAY_API_URL = process.env.RELAY_API_URL || 'https://localhost:3001';
 
 function App() {
   const [pkpEthAddress, setPkpEthAddress] = useState(null);
@@ -91,9 +91,48 @@ function App() {
     setStatus(`Hmm this is taking longer than expected...`)
   } 
 
+  const handleSendTransactionViaLitAction = async () => {
+    const provider = new ethers.providers.JsonRpcProvider(
+      "https://polygon-mumbai.g.alchemy.com/v2/onvoLvV97DDoLkAmdi0Cj7sxvfglKqDh"
+    );
+
+    const testName = "sendPKPTransaction";
+    console.debug(`Testing ${testName}...`);
+
+    // Change the litNetwork to "serrano" in the Client initiation in utils/init.js
+    const transactionParams = {
+      provider, 
+      to: "0x0b1C5E9E82393AD5d1d1e9a498BF7bAAC13b31Ee",
+      value: "0x000001",
+      data: "0x",
+      gasPrice: "0x2e90edd000",
+      gasLimit: "0x" + (30000).toString(16),
+      chain: "mumbai",
+      publicKey:  
+        // the publicKey is a LIT Staff members's PKP -> replace with your own.
+        pkpPublicKey,
+    };
+
+    const litNodeClient = new LitJsSdk.LitNodeClient({
+      litNetwork: "serrano",
+    });
+    await litNodeClient.connect();
+
+    const transactionRequest = await litNodeClient.sendPKPTransaction(
+      transactionParams
+    );
+
+    console.log("Lit Action Transaction result:", transactionRequest);
+
+    document.getElementById(
+      "status"
+    ).innerText = `${testName}: Success.  result is: ${transactionRequest}`;
+  }
+
   const handleTest = async () => {
-    const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain: "mumbai" });
-    console.debug("authSig", authSig);
+    handleSendTransactionViaLitAction();
+    // const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain: "mumbai" });
+    // console.debug("authSig", authSig);
   };
 
   const handleStoreEncryptionCondition = async () => {
@@ -319,6 +358,7 @@ function App() {
       />
       <div style={{ height: 100 }} />
       {pkpEthAddress && <div>PKP Eth Address: {pkpEthAddress}</div>}
+      {pkpPublicKey && <div>PKP Public Key: {pkpPublicKey}</div>}
       <div style={{ height: 100 }} />
       <h3>Step 2: Use Lit Network to obtain a session sig before storing a condition.</h3>
       <button onClick={handleStoreEncryptionCondition}>
