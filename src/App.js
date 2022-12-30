@@ -185,7 +185,8 @@ function App() {
     await litNodeClient.connect();
 
     const sessionSigs = await litNodeClient.getSessionSigs({
-      expiration: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(), // 24 hours
+      // expiration: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(), // 24 hours
+      expiration: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365 * 2).toISOString(), // 2 years
       chain: "ethereum",
       resources: [`litEncryptionCondition://*`],
       sessionCapabilityObject: {
